@@ -33,7 +33,7 @@ norm_zscore <- function(x, na.rm = TRUE) {
   # 2. Calculate Statistics
   # Note: if na.rm=TRUE, mean() and sd() will automatically ignore NAs
   mean_val <- mean(x, na.rm = na.rm)
-  sd_val   <- sd(x, na.rm = na.rm)
+  sd_val <- stats::sd(x, na.rm = na.rm)
 
   # 3. Handle Edge Case: Zero Variance
   # If all values are identical, sd_val is 0. Division by 0 creates Inf or NaN.
