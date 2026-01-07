@@ -1,78 +1,50 @@
 #' Min-Max Normalization
 #'
-#' @description
-#' Linearly scales a numeric vector to a specific range, typically [0, 1].
-#' This method preserves the relationships among the original data values.
+#' Scales a numeric vector to a specific range, typically [0, 1].
+#' This method is sensitive to outliers.
 #'
-#' @details
-#' Min-max normalization performs a linear transformation on the original data.
-#' The formula is given by:
-#' \deqn{x' = \frac{x - min(x)}{max(x) - min(x)} \times (new\_max - new\_min) + new\_min}
+#' Formula: \eqn{x' = \frac{x - \min(x)}{\max(x) - \min(x)} \times (\text{max\_val} - \text{min\_val}) + \text{min\_val}}
 #'
-#' where \eqn{x} is the original value, \eqn{x'} is the normalized value.
+#' @param x A numeric vector.
+#' @param min_val The minimum value of the target range. Default is 0.
+#' @param max_val The maximum value of the target range. Default is 1.
+#' @param na.rm Logical. Should NA values be removed during min/max calculation?
+#'   Default is \code{TRUE}.
 #'
-#' @param x A numeric vector to be normalized.
-#' @param min_val The lower bound of the target range. Default is 0.
-#' @param max_val The upper bound of the target range. Default is 1.
-#' @param na.rm Logical. Should missing values (NA) be removed for the calculation of
-#'   min/max? Default is \code{TRUE}.
-#'
-#' @return A numeric vector of the same length as \code{x}, scaled to the range
-#'   [\code{min_val}, \code{max_val}].
+#' @return A numeric vector scaled to the range [min_val, max_val].
 #'
 #' @references
-#' Han, J., Kamber, M., & Pei, J. (2011). Data Mining: Concepts and Techniques (3rd ed.).
-#' Morgan Kaufmann. Section 3.4.1.
+#' Han, J., Kamber, M., & Pei, J. (2011). \emph{Data mining: concepts and techniques} (3rd ed.). Morgan Kaufmann.
 #'
 #' @export
 #'
 #' @examples
-#' # Standard scaling to [0, 1]
-#' v <- c(10, 20, 30, 40, 50)
-#' norm_minmax(v)
-#'
-#' # Scaling to [-1, 1]
-#' norm_minmax(v, min_val = -1, max_val = 1)
-#'
-#' # Handling NAs
-#' v_na <- c(10, NA, 30, 40, 50)
-#' norm_minmax(v_na, na.rm = TRUE)
+#' norm_minmax(c(1, 2, 3, 4, 5))
+#' norm_minmax(c(1, 2, 3), min_val = -1, max_val = 1)
 norm_minmax <- function(x, min_val = 0, max_val = 1, na.rm = TRUE) {
-
-  # --- 1. Input Validation ---
-
-  # Ensure input x is a numeric vector
+  # 1. Input Validation
   if (!is.numeric(x)) {
-    stop("Error: Input 'x' must be a numeric vector.")
+    stop("Input 'x' must be a numeric vector.")
   }
 
-  # Ensure the target range is valid
   if (min_val >= max_val) {
     stop("Error: 'min_val' must be strictly less than 'max_val'.")
   }
 
-  # --- 2. Calculate Statistics ---
-
-  # Compute global min and max of the input vector
-  # Using range() is more efficient than calling min() and max() separately
+  # 2. Calculate Statistics
   rng <- range(x, na.rm = na.rm)
   x_min <- rng[1]
   x_max <- rng[2]
 
-  # --- 3. Handle Edge Case: Zero Variance ---
-
-  # If all values are identical (min == max), division by zero would occur.
-  # In this case, we return the lower bound (min_val) for all elements.
+  # 3. Handle Edge Case: Zero Variance
   if (x_min == x_max) {
-    warning("Warning: All values in 'x' are identical. Returning 'min_val' to avoid division by zero.")
-    # Create a result vector filled with min_val, preserving NAs from original input
+    warning("All values in 'x' are identical. Returning 'min_val' to avoid division by zero.")
     res <- rep(min_val, length(x))
-    res[is.na(x)] <- NA
+    res[is.na(x)] <- NA # Restore NAs if any
     return(res)
   }
 
-  # --- 4. Core Normalization Logic ---
-
+  # 4. Core Normalization Logic
   # Step A: Standardize to [0, 1]
   x_std <- (x - x_min) / (x_max - x_min)
 

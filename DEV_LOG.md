@@ -63,3 +63,37 @@
 -   **Day 5**: 进阶算法开发
     -   实现 **Robust Scaler** (鲁棒标准化)，使用 Median 和 MAD 抗衡异常值。
     -   继续保持 100% 测试覆盖率。
+## Day 5: 鲁棒算法与线性归一化体系 (2026-01-07)
+
+**耗时**: 2.5 小时 (超额完成)
+**状态**: ✅ 里程碑达成 (5/10 算法)
+
+### 🚀 核心进展 (Key Progress)
+
+1.  **算法库大扩容 (Algorithm Expansion)**
+    * **Robust Scaler (`norm_robust`)**: 实现基于 Median 和 MAD 的抗干扰标准化。
+    * **Decimal Scaling (`norm_decimal`)**: 实现移动小数点的缩放方法。
+    * **Mean Normalization (`norm_mean`)**: 实现均值中心化 + 极差缩放。
+    * **里程碑**: 目前已集齐 A 类 (线性) 和 B 类 (标准化) 的 5 大核心算法。
+
+2.  **学术规范化 (Academic Rigor)**
+    * 全面引入参考文献机制 (`@references`)。
+    * 为所有函数添加了经典教材引用：
+        * Han, J., et al. (2011) *Data Mining: Concepts and Techniques*.
+        * Huber, P. J. (1981) *Robust Statistics*.
+    * 提升了包的专业度和 JOSS 论文的可信度。
+
+3.  **质量攻坚 (Quality Assurance)**
+    * **覆盖率修复**: 发现并修复了 `norm_robust` 中未被测试覆盖的输入类型检查 (`stopifnot`)，将覆盖率从 95% 提升回 **100%**。
+    * **边界防御**: 为所有新算法添加了零方差 (Zero Variance/Range) 的防御逻辑。
+
+### 📝 经验总结 (Learnings)
+
+* **测试盲区**: `covr` 报告中的红色感叹号 (`!`) 非常有用，它帮我发现了虽然测试通过了、但从未触发过的防御性代码（如输入类型检查）。
+* **设计模式**: 发现 `norm_minmax`, `norm_mean`, `norm_decimal` 遵循相似的 "Validation -> Statistics -> Edge Case -> Calculation" 结构，这种标准化的代码结构极大地提高了开发效率。
+
+### 🔮 下一步计划 (Next Steps)
+
+* **Day 6**: 非线性变换 (Non-linear Transformations)
+    * 挑战 **Box-Cox 变换** (`trans_boxcox`)。
+    * 这是包里第一个需要“参数自动优化” (Optimization) 的高级算法，难度会提升一个台阶。

@@ -3,6 +3,8 @@
 #' Standardizes a numeric vector by centering it to have a mean of 0
 #' and scaling it to have a standard deviation of 1.
 #'
+#' Formula: \eqn{z = \frac{x - \mu}{\sigma}}
+#'
 #' @param x A numeric vector.
 #' @param na.rm Logical. Should NA values be removed during mean/sd calculation?
 #'   Default is \code{TRUE}.
@@ -10,6 +12,10 @@
 #' @return A numeric vector.
 #'   If the input vector has zero variance (all values are identical),
 #'   the function returns a centered vector (all zeros) and issues a warning.
+#'
+#' @references
+#' Han, J., Kamber, M., & Pei, J. (2011). \emph{Data mining: concepts and techniques} (3rd ed.). Morgan Kaufmann.
+#'
 #' @export
 #'
 #' @examples

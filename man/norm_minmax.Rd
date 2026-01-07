@@ -7,43 +7,29 @@
 norm_minmax(x, min_val = 0, max_val = 1, na.rm = TRUE)
 }
 \arguments{
-\item{x}{A numeric vector to be normalized.}
+\item{x}{A numeric vector.}
 
-\item{min_val}{The lower bound of the target range. Default is 0.}
+\item{min_val}{The minimum value of the target range. Default is 0.}
 
-\item{max_val}{The upper bound of the target range. Default is 1.}
+\item{max_val}{The maximum value of the target range. Default is 1.}
 
-\item{na.rm}{Logical. Should missing values (NA) be removed for the calculation of
-min/max? Default is \code{TRUE}.}
+\item{na.rm}{Logical. Should NA values be removed during min/max calculation?
+Default is \code{TRUE}.}
 }
 \value{
-A numeric vector of the same length as \code{x}, scaled to the range
-  [\code{min_val}, \code{max_val}].
+A numeric vector scaled to the range [min_val, max_val].
 }
 \description{
-Linearly scales a numeric vector to a specific range, typically [0, 1].
-This method preserves the relationships among the original data values.
+Scales a numeric vector to a specific range, typically [0, 1].
+This method is sensitive to outliers.
 }
 \details{
-Min-max normalization performs a linear transformation on the original data.
-The formula is given by:
-\deqn{x' = \frac{x - min(x)}{max(x) - min(x)} \times (new\_max - new\_min) + new\_min}
-
-where \eqn{x} is the original value, \eqn{x'} is the normalized value.
+Formula: \eqn{x' = \frac{x - \min(x)}{\max(x) - \min(x)} \times (\text{max\_val} - \text{min\_val}) + \text{min\_val}}
 }
 \examples{
-# Standard scaling to [0, 1]
-v <- c(10, 20, 30, 40, 50)
-norm_minmax(v)
-
-# Scaling to [-1, 1]
-norm_minmax(v, min_val = -1, max_val = 1)
-
-# Handling NAs
-v_na <- c(10, NA, 30, 40, 50)
-norm_minmax(v_na, na.rm = TRUE)
+norm_minmax(c(1, 2, 3, 4, 5))
+norm_minmax(c(1, 2, 3), min_val = -1, max_val = 1)
 }
 \references{
-Han, J., Kamber, M., & Pei, J. (2011). Data Mining: Concepts and Techniques (3rd ed.).
-Morgan Kaufmann. Section 3.4.1.
+Han, J., Kamber, M., & Pei, J. (2011). \emph{Data mining: concepts and techniques} (3rd ed.). Morgan Kaufmann.
 }

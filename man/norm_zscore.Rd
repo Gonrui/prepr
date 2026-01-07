@@ -21,10 +21,16 @@ A numeric vector.
 Standardizes a numeric vector by centering it to have a mean of 0
 and scaling it to have a standard deviation of 1.
 }
+\details{
+Formula: \eqn{z = \frac{x - \mu}{\sigma}}
+}
 \examples{
 # Standard usage
 norm_zscore(c(1, 2, 3, 4, 5))
 
 # Edge case: Zero variance
 norm_zscore(c(5, 5, 5))
+}
+\references{
+Han, J., Kamber, M., & Pei, J. (2011). \emph{Data mining: concepts and techniques} (3rd ed.). Morgan Kaufmann.
 }
