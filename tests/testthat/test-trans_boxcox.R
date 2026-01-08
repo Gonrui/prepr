@@ -67,3 +67,20 @@ test_that("Box-Cox rejects invalid lambda input", {
   expect_error(trans_boxcox(x, lambda = "invalid_string"), "must be 'auto' or a single numeric")
   expect_error(trans_boxcox(x, lambda = c(1, 2)), "must be 'auto' or a single numeric")
 })
+
+test_that("Internal log-likelihood handles tiny lambda (Near Zero)", {
+  x <- c(1, 10, 100)
+
+  # Use ':::' to access the internal unexported function 'boxcox_loglik'.
+  # We explicitly pass lambda = 0 to force the execution of the 'if (abs(lam) < 1e-5)' branch.
+  # This ensures 100% test coverage for numerical stability logic.
+  ll_zero <- prepr:::boxcox_loglik(0, x)
+
+  # Verify that it returns a valid numeric result (no error, no NA)
+  expect_true(is.numeric(ll_zero))
+  expect_false(is.na(ll_zero))
+
+  # Also verify the standard branch (lambda = 1) still works
+  ll_one <- prepr:::boxcox_loglik(1, x)
+  expect_true(is.numeric(ll_one))
+})

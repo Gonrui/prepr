@@ -25,26 +25,8 @@ Applies the Box-Cox transformation to normalize the data distribution.
 It automatically handles non-positive values by shifting the data.
 The optimal lambda parameter is estimated using Maximum Likelihood Estimation (MLE).
 }
-\details{
-Formula:
-\eqn{y(\lambda) = \frac{x^\lambda - 1}{\lambda}} if \eqn{\lambda \neq 0};
-\eqn{\ln(x)} if \eqn{\lambda = 0}.
-}
-\examples{
-# 1. Create skewed data (Chi-square distribution)
-x <- rchisq(100, df = 2)
-
-# 2. Apply Box-Cox
-x_trans <- trans_boxcox(x)
-
-# 3. Check parameters
-attr(x_trans, "lambda")
-
-# 4. Works with negative values (Auto-shift)
-x_neg <- x - 10
-trans_boxcox(x_neg)
-}
 \references{
 Box, G. E. P., & Cox, D. R. (1964). An analysis of transformations.
 \emph{Journal of the Royal Statistical Society: Series B (Methodological)}, 26(2), 211-243.
+\url{https://www.jstor.org/stable/2984418}
 }
