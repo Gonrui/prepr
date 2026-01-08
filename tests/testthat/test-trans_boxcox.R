@@ -48,3 +48,22 @@ test_that("Box-Cox handles NA values", {
 test_that("Box-Cox checks input types", {
   expect_error(trans_boxcox("text"), "must be a numeric vector")
 })
+
+test_that("Box-Cox handles explicit lambda = 0 (Log transform)", {
+  x <- c(exp(1), exp(2)) # e^1, e^2
+
+  res <- trans_boxcox(x, lambda = 0)
+
+  # Key point: Add `as.numeric()` to remove attributes before comparing values.
+  expect_equal(as.numeric(res), c(1, 2))
+
+  # Check attributes separately
+  expect_equal(attr(res, "lambda"), 0)
+})
+
+test_that("Box-Cox rejects invalid lambda input", {
+  x <- 1:10
+  # Intentionally feeding garbage parameters
+  expect_error(trans_boxcox(x, lambda = "invalid_string"), "must be 'auto' or a single numeric")
+  expect_error(trans_boxcox(x, lambda = c(1, 2)), "must be 'auto' or a single numeric")
+})

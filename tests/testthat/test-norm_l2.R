@@ -13,3 +13,7 @@ test_that("L2 Norm handles zero vector", {
   expect_warning(res <- norm_l2(x), "L2 norm is zero")
   expect_equal(res, c(0, 0, 0))
 })
+
+test_that("norm_l2 rejects non-numeric input", {
+  expect_error(norm_l2("text"), "must be a numeric vector")
+})
