@@ -151,3 +151,71 @@
 2.  **学术线 (Academic & Research)**
     * **数学推演 (Derivation)**: 为 arXiv 论文撰写 `norm_mode_range` 的严谨分段函数定义与性质证明。
     * **数据认证 (Validation)**: 设计 Simulation Study（模拟真实 Ground Truth）与 Real-world Data（如 UCI HAR 或 NHANES）验证方案，证明算法的鲁棒性。
+    
+    # 📅 开发日志: 2026-01-09 (周五)
+
+**项目:** `prepr` R Package & Scientific Reports Manuscript  
+**地点:** TMIG 办公室 -> 家  
+**状态:** 🟢 **Code Freeze (代码封版) / 备战论文** **心情:** 势如破竹，无懈可击 🚀
+
+---
+
+## Day 7: 今日开发日志
+## 🏆 今日核心战果 (Key Achievements)
+
+### 1. R 包工程化收官 (`prepr` v0.1.0)
+> **决策**: 今天完成了代码层面的所有修补，正式进入“冻结”状态，不再随意改动逻辑。
+
+* **M-Score 算法增强 (V2.0)**:
+    * **痛点解决**: 针对传感器高精度数据（如 `3000.001` vs `3000.002`）导致算法误判为“均匀分布”的问题，实装了 `digits` 参数。
+    * **机制**: 引入“保护壳”逻辑——在寻找众数时进行舍入（Rounding），但在计算得分时保留原始精度。完美平衡了鲁棒性与精确度。
+* **代码洁癖修复**:
+    * 修复了 `trans_log` 在处理负数时触发 R 原生 `NaNs produced` 警告的问题（通过 `suppressWarnings`），消除了测试中的噪音。
+* **质量保证 (QA)**:
+    * **100% 测试覆盖率**: 使用 `covr` 验证。专门补充了 `digits=NULL` 的分支测试，消灭了最后的覆盖率盲区。
+    * **全平台通过**: GitHub Actions (`check-standard`) 全绿，确认兼容 **R 4.5 (Devel)**。
+* **文档与品牌**:
+    * **README 重构**: 增加了学术引用、LaTeX 公式推导、Badge 徽章。
+    * **Logo 生成**: 编写了纯 Base R 代码生成了官方六边形 Hex Logo (`man/figures/logo.png`)，解决了 GitHub 首页破图问题。
+
+### 2. 跨平台验证与“进货” (Data Production)
+> **策略**: 利用工作日单位的 MATLAB 资源，生成论文所需的“黄金标准”素材，为周末在家写作备好弹药。
+
+* **MATLAB (信号处理)**:
+    * ✅ **造数据**: 生成了 `geriatric_simulation.csv`。包含：日常平台期 (Plateau)、跌倒异常 (Left Tail)、多动异常 (Right Tail) 以及模拟传感器白噪声。
+    * ✅ **造基准**: 生成了 `matlab_benchmark.csv`。记录了 MATLAB 官方 `zscore` 和 `normalize` 的计算结果，用于论文中的 Cross-Validation 环节。
+    * ✅ **造图**: 生成了 `spectrogram.png` (时频图)，用于补充材料 (Supplementary Materials)。
+* **Wolfram (数学验证)**:
+    * ✅ **理论证明**: 完成 M-Score 分段函数的符号求导，证明了尾部区域的严格单调性 (Strictly Monotonic)。
+    * ✅ **素材导出**: 导出了矢量级原理图 `M_Score_Theory.pdf` (Figure 1a) 和标准 LaTeX 源码 `formula.txt`。
+
+### 3. 基础设施 (Infrastructure)
+* **GitHub Faculty**: 确认身份已于 1月6日 通过认证，费用全免 ($0)，Copilot 和 Actions 额度将在 72h 内生效。
+* **License**: 确认 MIT 协议配置无误。
+
+---
+
+## 🎒 资源转移清单 (Asset Inventory)
+*以下关键文件已从单位电脑安全转移至 U盘/网盘，周末写作必需品：*
+
+1.  📄 **`geriatric_simulation.csv`** (Figure 1b 核心数据源)
+2.  📄 **`matlab_benchmark.csv`** (数值验证基准)
+3.  🖼️ **`spectrogram.png`** (补充材料图)
+4.  🖼️ **`M_Score_Theory.pdf`** (Figure 1a 理论模型图)
+5.  📝 **`formula.txt`** (LaTeX 公式源码)
+
+---
+
+## 📝 周末作战计划 (Weekend Strategy)
+**目标**: 完成 *Scientific Reports* / arXiv 论文初稿 (Draft)。
+
+1.  **Figure 1 组装 (R + ggplot2)**:
+    * 读取 `geriatric_simulation.csv`。
+    * 左图放 Wolfram 的理论曲线，右图放 R 跑出来的真实数据对比 (Z-Score vs M-Score)。
+2.  **方法论写作 (Methodology)**:
+    * 直接填入 Wolfram 生成的公式和单调性证明结论。
+    * 强调 `digits` 参数对传感器噪声的鲁棒性。
+3.  **结果分析 (Results)**:
+    * 基于 MATLAB 生成的基准数据，量化 M-Score 在平台型分布下的信噪比 (SNR) 优势。
+
+> **备注**: 技术地基已经打得非常牢固。周末不需要写代码（除了画图），只专注于“讲故事”。
