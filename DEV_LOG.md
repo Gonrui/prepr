@@ -274,3 +274,77 @@
 * [ ] 修复所有 ERROR/WARNING
 * [ ] 填写 `cran-comments.md`
 * [ ] 提交发布！
+
+
+# Day 11: CRAN Submission工作回顾
+
+## 📅 开发日志：工程化环境搭建与 M-Score 确权
+
+**日期**: 2026-01-13  
+**地点**: 东京都板桥区  
+**状态**: 🚀 High Performance (环境彻底打通)  
+**标签**: #RPackage #PyCharm #CLion #Copilot #M-Score
+
+---
+
+## 📝 1. R 包开发 (`prepkit`)
+### 网站维护 SOP
+明确了 `pkgdown` 静态网站的维护机制，确定了手动构建的“三连击”流程：
+1.  `devtools::document()` (更新文档)
+2.  `pkgdown::build_site()` (更新 HTML)
+3.  `git push` (推送到 GitHub)
+
+### 学术资产确权
+* **命名权**: 确认 GitHub 提交记录已为 "M-Score" 建立了 "Prior Art" (现有技术) 证据。
+* **路线图**: GitHub (插旗) -> CRAN (官方字典) -> Paper (理论闭环)。
+* **SEO**: 提交了 Google Search Console，并计划利用 R-Universe 加速收录。
+
+---
+
+## 🛠️ 2. 开发环境重构 (The "JetBrains" Migration)
+> **核心感悟**: 以前代码学不会是因为 IDE 太繁琐。今天彻底消除了工具摩擦力，实现了“全栈科研环境”的统一。
+
+### A. 身份与权益
+* [x] 成功申请 **GitHub Education** (TMU 讲师身份)。
+* [x] 激活 **GitHub Copilot Pro** (AI 结对编程)。
+* [x] 激活 **JetBrains Educational License** (PyCharm Pro + CLion)。
+
+### B. Python 环境 (PyCharm Professional)
+放弃了 VS Code 的繁琐配置，转投 PyCharm Pro 的“科学模式”。
+* **引擎**: Anaconda (`vscode_py313` 环境, Python 3.13)。
+* **布局复刻 (RStudio Style)**:
+    * 左侧: Editor (代码)
+    * 右侧: SciView (绘图 + Data View)
+    * 底部: Python Console (交互 + 变量)
+* **关键配置**:
+    * 快捷键改为 `Ctrl + Enter` 执行选定代码。
+    * 界面语言切换回 **英文** (为了更精准的报错搜索和术语习惯)。
+    * 安装并登录 GitHub Copilot。
+
+### C. C++ 环境 (CLion)
+确立了 C++ 开发的双层工作流：
+* **IDE**: 安装 CLion，配置 MinGW 工具链。
+* **调试**: 使用 CLion 进行纯 C++ 算法开发和断点调试 (查看内存、堆栈)。
+* **集成**: 逻辑调通后，再复制到 RStudio `src/` 目录，通过 `Rcpp` 封装给 R 调用。
+
+---
+
+## 💡 3. AI 协同工作流
+已在所有 IDE (RStudio, PyCharm, CLion) 中实装 **GitHub Copilot**。
+* **Ghost Text**: 写注释 -> `Tab` 补全代码。
+* **Copilot Chat**: 侧边栏对话，解释代码或生成复杂逻辑。
+
+**现在的角色分工**:
+* **我**: 负责学术思想、逻辑设计、翻译需求。
+* **Copilot**: 负责语法补全、API 记忆、样板代码生成。
+* **IDE**: 负责编译、调试、可视化。
+
+---
+
+## 📌 4. Next Steps (明日计划)
+- [ ] **Python 原型**: 在 PyCharm 中尝试写出 M-Score 的 Python 版本核心函数。
+- [ ] **C++ 练手**: 在 CLion 中写一个简单的向量计算 Demo，熟悉断点调试。
+- [ ] **论文写作**: 继续推进 M-Score 的方法论部分。
+
+---
+> *"从这一刻起，写代码不再是和软件搏斗的技术活，而是单纯的翻译活。" — 2026.01.13*
