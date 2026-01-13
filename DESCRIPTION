@@ -1,16 +1,20 @@
 Package: prepkit
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Tools for Data Normalization and Transformation
 Version: 0.1.0
 Authors@R: 
     person(given = "Rui", 
            family = "Gong", 
-           email = "gongrui4432@gmail.com",   # <--- 换成 Gmail，这是最稳的
+           email = "gongrui4432@gmail.com", 
            role = c("aut", "cre"), 
            comment = c(ORCID = "0000-0001-5112-5696"))
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: A comprehensive collection of tools for data normalization and 
+    transformation in the preprocessing stage of data analysis. It provides 
+    functions for various scaling methods such as min-max, Z-score, and L2 
+    normalization, as well as power transformations including Box-Cox and 
+    Yeo-Johnson. These methods are designed to help users prepare their 
+    datasets for machine learning and statistical modeling by ensuring 
+    proper data distribution and scale.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
