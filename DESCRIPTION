@@ -5,7 +5,7 @@ Version: 0.1.0
 Authors@R: 
     person(given = "Rui", 
            family = "Gong", 
-           email = "gr4432@outlook.com", 
+           email = "gongrui4432@gmail.com",   # <--- 换成 Gmail，这是最稳的
            role = c("aut", "cre"), 
            comment = c(ORCID = "0000-0001-5112-5696"))
 Maintainer: The package maintainer <yourself@somewhere.net>
