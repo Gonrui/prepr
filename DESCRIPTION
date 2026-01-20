@@ -1,7 +1,7 @@
 Package: prepkit
 Type: Package
 Title: Data Normalization and Transformation
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     person(given = 'Rui', 
            family = 'Gong', 
@@ -18,8 +18,8 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.3
-URL: https://gonrui.github.io/prepkit, https://github.com/Gonrui/prepkit
-BugReports: https://github.com/Gonrui/prepkit/issues
+URL: https://gonrui.github.io/prepkit/, https://github.com/Gonrui/prepkit/
+BugReports: https://github.com/Gonrui/prepkit/issues/
 Language: en-US
 Suggests: testthat (>= 3.0.0)
 Config/testthat/edition: 3

@@ -1,14 +1,17 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.Rhistory$
 ^README\.Rmd$
 ^\.github$
 ^LICENSE\.md$
 ^DEV_LOG\.md$
 ^data-raw$
 ^notes_cn$
+^inst/notes_cn$
 ^cran-comments\.md$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^build$
 ^CRAN-SUBMISSION$
 ^CLAUDE\.md$

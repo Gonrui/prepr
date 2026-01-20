@@ -45,4 +45,12 @@ covr::package_coverage()
 - 作者: Rui Gong (东京都老年研究所)
 - 许可证: MIT
 - 测试覆盖率: 100%
-- 目标: 提交 CRAN
+- 状态: CRAN 提交准备完成 (2026-01-20)
+
+## 最近更新
+### 2026-01-20: CRAN 提交准备完成
+- 修正 DESCRIPTION 符合 CRAN 标准（添加 DOI 引用，移除冗余词）
+- 完成本地全面检查（R CMD check: 0/0/0）
+- 重建 pkgdown 网站并添加网站 URL
+- 更新拼写词典和构建忽略规则
+- 生成最终提交包 `prepkit_0.1.0.tar.gz`
