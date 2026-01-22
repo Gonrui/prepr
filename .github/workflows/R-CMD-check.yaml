@@ -25,11 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config: ${{ fromJSON(
-          (github.event_name == 'workflow_dispatch' && github.event.inputs.full_matrix == 'true')
-          && '[{"os":"macos-latest","r":"release"},{"os":"windows-latest","r":"release"},{"os":"ubuntu-latest","r":"devel","http-user-agent":"release"},{"os":"ubuntu-latest","r":"release"},{"os":"ubuntu-latest","r":"oldrel-1"}]'
-          || '[{"os":"ubuntu-latest","r":"release"}]'
-        ) }}
+        config: ${{ fromJSON((github.event_name == 'workflow_dispatch' && github.event.inputs.full_matrix == 'true') && '[{"os":"macos-latest","r":"release"},{"os":"windows-latest","r":"release"},{"os":"ubuntu-latest","r":"devel","http-user-agent":"release"},{"os":"ubuntu-latest","r":"release"},{"os":"ubuntu-latest","r":"oldrel-1"}]' || '[{"os":"ubuntu-latest","r":"release"}]') }}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
