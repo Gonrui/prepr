@@ -95,3 +95,5 @@ If you use `prepkit` or the M-Score algorithm in your research, please cite:
 ## 📄 License
 
 MIT © Rui Gong (Tokyo Metropolitan Institute of Gerontology)
+
+### 🤝 prepkit is under active development. Core design principles and quality control conventions are considered stable.
