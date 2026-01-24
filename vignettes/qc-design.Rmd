@@ -1,0 +1,44 @@
+---
+title: "Quality Control and Design Principles in prepkit"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Quality Control and Design Principles in prepkit}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+author: "prepkit developers"
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+## Scope and Non-Goals
+
+## The Role of Quality Control in Data Preprocessing
+
+## QC Pipeline Overview
+
+## QC-Enabling Preprocessing
+
+## QC Assessment
+
+## QC Decision
+
+## Analysis-Level Preprocessing
+
+## Post-Processing Validation
+
+## Reversibility and Irreversibility
+
+## Optional QC and User Responsibility
+
+## Design Principles Summary
