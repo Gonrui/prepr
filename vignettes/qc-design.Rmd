@@ -20,40 +20,201 @@ knitr::opts_chunk$set(
 ```
 
 ## Introduction
-Quality control (QC) is a foundational yet often implicit component of data preprocessing.
-In many analytical workflows, QC is embedded informally within preprocessing steps or applied
-in an ad-hoc manner without a clearly defined structure.
 
-As data volume, dimensionality, and heterogeneity increase, this implicit treatment of QC
-becomes increasingly fragile. Decisions about data inclusion, exclusion, or modification are
-often made implicitly, without explicit documentation of the criteria or assumptions involved.
+Quality control (QC) is a foundational yet often implicit component of data preprocessing. In many analytical workflows, QC is embedded informally within preprocessing steps or applied in an ad-hoc manner without a clearly defined structure.
 
-In *prepkit*, quality control is treated as an explicit and structured process that precedes
-analysis-level preprocessing. QC is not intended to improve data quality or to optimize data
-for downstream models. Instead, its purpose is to assess whether data are sufficiently reliable
-to justify further processing and analysis.
+As data volume, dimensionality, and heterogeneity increase, this implicit treatment of QC becomes increasingly fragile. Decisions about data inclusion, exclusion, or modification are often made implicitly, without explicit documentation of the criteria or assumptions involved.
 
-This vignette documents the design principles underlying QC in *prepkit*. It focuses on
-conceptual boundaries, processing order, and responsibility separation, rather than on
-implementation details or step-by-step usage instructions. The goal is to make QC assumptions
-explicit, auditable, and reproducible across datasets and projects.
+In *prepkit*, quality control is treated as an explicit and structured process that precedes analysis-level preprocessing. QC is not intended to improve data quality or to optimize data for downstream models. Instead, its purpose is to assess whether data are sufficiently reliable to justify further processing and analysis.
 
+This vignette documents the design principles underlying QC in *prepkit*. It focuses on conceptual boundaries, processing order, and responsibility separation, rather than on implementation details or step-by-step usage instructions. The goal is to make QC assumptions explicit, auditable, and reproducible across datasets and projects.
 
 ## Scope and Non-Goals
 
+This section defines the conceptual scope of quality control (QC) in *prepkit* and explicitly states what is intentionally excluded. Clear boundaries are essential to prevent QC from being conflated with data cleaning, optimization, or model-driven tuning.
+
+### In scope
+
+Within *prepkit*, QC is defined as a structured process that:
+
+-   Assesses whether data are suitable for downstream processing and analysis
+-   Produces explicit, inspectable metadata rather than modified data values
+-   Operates upstream of analysis-level preprocessing
+-   Separates assessment from decision-making
+-   Preserves responsibility transparency between the package and the user
+
+QC outputs are intended to support explicit decisions such as filtering, weighting, or stratification, but do not enforce those decisions automatically.
+
+### Non-goals
+
+The following are intentionally out of scope for QC in *prepkit*:
+
+-   Automatic data correction, repair, or enhancement
+-   Implicit removal, replacement, or modification of observations
+-   Device-, vendor-, or protocol-specific heuristics
+-   Model-driven or outcome-dependent quality assessment
+-   Optimization of data for predictive performance
+-   Performance tuning, parallelization, or hardware acceleration
+
+In particular, *prepkit* does not attempt to "fix" data or to improve data quality. Any transformation that alters data values for the purpose of analysis is considered analysis-level preprocessing and must occur after QC decisions.
+
+By explicitly declaring these non-goals, *prepkit* aims to provide a QC framework that is predictable, auditable, and resistant to misuse.
+
 ## The Role of Quality Control in Data Preprocessing
+
+In *prepkit*, quality control (QC) occupies a distinct methodological position that is deliberately separated from analysis-level preprocessing. This separation is essential to avoid conflating data assessment with data transformation.
+
+Preprocessing steps such as normalization, imputation, smoothing, or feature extraction alter the representation of data and may directly influence downstream statistical results. QC, in contrast, is designed to operate **prior to such transformations** and serves a different purpose: to evaluate whether the raw data are sufficiently reliable to justify further processing.
+
+QC therefore functions as a decision-support layer rather than a data-modifying layer. Its outputs consist of metrics, scores, flags, and summaries that describe data quality properties. These outputs inform explicit decisions about data inclusion, exclusion, or weighting, but do not themselves modify the data.
+
+By positioning QC upstream of analysis-level preprocessing, *prepkit* prevents circular reasoning in which preprocessing choices implicitly define what is considered "good" data. This ordering ensures that quality assessment reflects properties of the observed data rather than artifacts introduced by downstream transformations.
+
+Importantly, QC in *prepkit* is not intended to optimize data for predictive performance or model fit. Improving model performance by altering data representations is the responsibility of analysis-level preprocessing and modeling, not QC. Maintaining this boundary preserves the interpretability and auditability of quality-related decisions.
 
 ## QC Pipeline Overview
 
+*prepkit* adopts a structured and sequential QC pipeline in which each stage has a clearly defined responsibility. The pipeline is designed to make quality-related assumptions explicit and to prevent implicit data modification prior to analysis.
+
+The QC pipeline in *prepkit* consists of the following ordered stages:
+
+1.  **Raw data**
+2.  **QC-enabling preprocessing**
+3.  **QC assessment**
+4.  **QC decision** (optional but explicit)
+5.  **Analysis-level preprocessing**
+6.  **Post-processing validation**
+
+Each stage in this pipeline is conceptually independent and must not be collapsed into adjacent steps.
+
+QC-enabling preprocessing prepares data for quality assessment without altering their substantive meaning. QC assessment then evaluates observable quality properties and produces explicit metadata. QC decisions translate assessment results into concrete actions, such as filtering, weighting, or stratification, but are never performed automatically.
+
+Only after QC decisions have been made does analysis-level preprocessing occur. This ordering ensures that transformations intended to support modeling or inference do not retroactively define what is considered acceptable data quality.
+
+Finally, post-processing validation serves as a consistency check to verify that downstream transformations have not violated key analytical assumptions. This step does not redefine data quality and does not replace QC assessment.
+
+By enforcing a fixed processing order and clear stage boundaries, *prepkit* provides a QC framework that is explicit, auditable, and resistant to unintended data leakage.
+
 ## QC-Enabling Preprocessing
+
+QC-enabling preprocessing refers to transformations that make quality-related properties observable or computable without altering the substantive meaning of the data.
+
+The purpose of this stage is not to improve data quality, but to prepare data for quality assessment. As such, QC-enabling preprocessing must preserve the original data values or their interpretability.
+
+Typical QC-enabling preprocessing operations include:
+
+-   Alignment to expected observation grids
+-   Explicit representation of missingness
+-   Derivation of auxiliary quantities for QC metrics
+-   Robust transformations used solely for comparability
+
+Operations that modify data values with the intent of improving downstream analysis, such as imputation, smoothing, or normalization for modeling, are explicitly excluded from this stage.
+
+By restricting QC-enabling preprocessing to assessment-supporting transformations, *prepkit* ensures that quality evaluation reflects properties of the observed data rather than artifacts introduced by analysis-oriented processing.
 
 ## QC Assessment
 
+QC assessment is the stage at which observable data-quality properties are translated
+into explicit metrics, scores, or flags and returned as metadata.
+
+The role of QC assessment in *prepkit* is to make data quality **evaluable, comparable,
+and auditable** across samples, time windows, or subjects. QC assessment does not modify
+data values and does not perform any form of automatic decision-making or data exclusion.
+
+Typical QC assessment dimensions include:
+
+- Coverage relative to expected observations
+- Structure and extent of missingness
+- Signal stability or plausibility
+- Detection of flatline or saturation behavior
+- Variance collapse or degeneracy
+
+QC assessment outputs consist exclusively of metadata objects that summarize these
+properties, including metrics, scores, flags, and diagnostic information. These outputs
+are intended to support explicit downstream decisions, such as filtering, weighting, or
+stratification, but are not used to alter the data directly.
+
+The M-score is an example of a QC assessment metric in *prepkit*. When used in this
+context, it quantifies structural characteristics of the data without introducing
+assumptions related to downstream models, optimization objectives, or analytical
+performance.
+
+
+
 ## QC Decision
+
+QC decision is the stage at which QC assessment outputs are translated into explicit,
+user-invoked actions that affect downstream processing.
+
+In *prepkit*, QC decisions are intentionally separated from QC assessment. While QC
+assessment produces metrics, scores, flags, and diagnostics, QC decision determines how,
+or whether, those outputs influence subsequent analysis.
+
+Typical QC decisions include:
+
+- Excluding observations or time windows
+- Assigning weights based on quality indicators
+- Stratifying data by quality tiers
+
+QC decisions are never performed automatically. They must be explicitly invoked by the
+user and must be based on clearly defined criteria derived from QC assessment outputs.
+
+By enforcing this separation, *prepkit* ensures that quality-related assumptions remain
+transparent and that responsibility for data inclusion or exclusion is explicitly
+assigned to the user rather than embedded implicitly within preprocessing functions.
+
 
 ## Analysis-Level Preprocessing
 
+Analysis-level preprocessing refers to transformations that directly modify the data
+representation for the purpose of statistical analysis or modeling.
+
+Unlike QC-related stages, analysis-level preprocessing is explicitly allowed to alter
+data values and may influence downstream analytical results. These transformations are
+therefore placed after QC decisions to avoid circular reasoning and unintended data
+leakage.
+
+Typical analysis-level preprocessing operations include:
+
+- Normalization or scaling for modeling
+- Imputation of missing values
+- Smoothing or denoising
+- Feature extraction and aggregation
+
+In *prepkit*, analysis-level preprocessing is treated as a distinct stage with clearly
+declared intent. Functions in this category are not considered quality control tools,
+even if they reduce noise or highlight anomalous behavior.
+
+By separating analysis-level preprocessing from QC, *prepkit* ensures that data quality
+assessment reflects properties of the observed data rather than artifacts introduced by
+analysis-oriented transformations.
+
+
 ## Post-Processing Validation
+
+Post-processing validation is the stage at which the effects of analysis-level
+preprocessing are examined to ensure that key analytical assumptions have not been
+violated.
+
+Unlike QC assessment, post-processing validation does not redefine data quality and does
+not generate quality scores or flags. Instead, it serves as a consistency and sanity
+check on the outcomes of preprocessing steps that intentionally modify data values.
+
+Typical post-processing validation activities include:
+
+- Verifying that value ranges remain plausible
+- Checking for unintended loss of variability
+- Confirming that preprocessing did not introduce systematic artifacts
+- Inspecting summary statistics before and after transformation
+
+Post-processing validation does not replace QC assessment and must not be used to justify
+retroactive changes to QC decisions. Its role is limited to identifying potential issues
+introduced by analysis-level preprocessing so that they can be addressed explicitly.
+
+By treating post-processing validation as a distinct stage, *prepkit* encourages
+transparent evaluation of preprocessing effects without blurring the boundary between
+data quality assessment and data transformation.
+
 
 ## Reversibility and Irreversibility
 
