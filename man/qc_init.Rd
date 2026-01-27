@@ -10,6 +10,8 @@ qc_init(data, meta = list(), validate = FALSE)
 \item{data}{Raw data (data.frame / tibble / other).}
 
 \item{meta}{A list of metadata describing `data`.}
+
+\item{validate}{Logical. If TRUE, warn when `data` is not data.frame-like.}
 }
 \value{
 An object of class `qc_bundle`.

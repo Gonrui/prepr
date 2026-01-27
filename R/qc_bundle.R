@@ -5,6 +5,7 @@
 #'
 #' @param data Raw data (data.frame / tibble / other).
 #' @param meta A list of metadata describing `data`.
+#' @param validate Logical. If TRUE, warn when `data` is not data.frame-like.
 #' @return An object of class `qc_bundle`.
 #' @export
 qc_init <- function(data, meta = list(), validate = FALSE) {
